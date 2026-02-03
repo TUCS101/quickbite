@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QuickBite Voice Support</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+
+/* Hide Vapi widget */
+#vapi-widget,.vapi-widget,iframe[src*="vapi"]{display:none!important}
+
+body{
+background:#020617;
+color:white;
+overflow:hidden;
+}
+
+#particles{
+position:fixed;
+inset:0;
+z-index:-1;
+}
+
+header{
+padding:22px 60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.logo{
+font-size:22px;
+font-weight:700;
+color:#fb923c;
+}
+
+main{
+max-width:1100px;
+margin:auto;
+padding:80px 24px;
+}
+
+.hero{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+align-items:center;
+}
+
+.hero h1{
+font-size:46px;
+margin-bottom:14px;
+}
+
+.hero p{
+color:#cbd5f5;
+margin-bottom:26px;
+}
+
+.features{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:16px;
+}
+
+.feature{
+background:rgba(255,255,255,.05);
+padding:18px;
+border-radius:14px;
+text-align:center;
+}
+
+.panel{
+background:rgba(255,255,255,.06);
+border-radius:22px;
+padding:36px;
+text-align:center;
+backdrop-filter:blur(14px);
+box-shadow:0 0 30px rgba(0,0,0,.6);
+transition:.3s;
+}
+
+.panel.active{
+box-shadow:0 0 40px #fb923c;
+}
+
+.mic{
+font-size:48px;
+margin-bottom:10px;
+}
+
+.mic.active{
+filter:drop-shadow(0 0 12px #fb923c);
+animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1)}
+50%{transform:scale(1.15)}
+100%{transform:scale(1)}
+}
+
+.status{margin:10px 0;color:#94a3b8}
+.timer{margin-bottom:20px;font-size:18px;color:#fb923c}
+
+.controls{
+display:flex;
+gap:18px;
+justify-content:center;
+}
+
+button{
+padding:14px 32px;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+transition:.2s;
+}
+
+.start{background:#fb923c;color:black}
+.stop{background:#ef4444;color:white}
+button:disabled{opacity:.4}
+
+footer{
+margin-top:90px;
+text-align:center;
+color:#64748b;
+}
+
+@media(max-width:900px){
+.hero{grid-template-columns:1fr}
+.features{grid-template-columns:1fr}
+header{padding:20px}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<header>
+<div class="logo">QuickBite</div>
+<div>AI Voice Support</div>
+</header>
+
+<main>
+
+<section class="hero">
+
+<div>
+<h1>Talk to QuickBite Support</h1>
+<p>Professional AI voice assistant for order tracking, delivery delays, missing items, wrong items, and cancellations.</p>
+
+<div class="features">
+<div class="feature">📦 Order Status</div>
+<div class="feature">🚚 Delivery Help</div>
+<div class="feature">🤖 AI Assistant</div>
+</div>
+</div>
+
+<div class="panel" id="panel">
+<div class="mic" id="mic">🎤</div>
+
+<h2>Voice Support</h2>
+
+<div class="status">
+Status: <span id="status">Disconnected</span>
+</div>
+
+<div class="timer" id="timer">00:00</div>
+
+<div class="controls">
+<button id="startBtn" class="start">Start</button>
+<button id="stopBtn" class="stop" disabled>Stop</button>
+</div>
+</div>
+
+</section>
+
+<footer>
+QuickBite • College Demo • 2026
+</footer>
+
+</main>
+
+<script>
+/* ---------------- PARTICLES ---------------- */
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+let w,h,particles=[];
+
+function resize(){
+w=canvas.width=window.innerWidth;
+h=canvas.height=window.innerHeight;
+}
+window.onresize=resize;
+resize();
+
+for(let i=0;i<80;i++){
+particles.push({
+x:Math.random()*w,
+y:Math.random()*h,
+r:Math.random()*2+1,
+dx:(Math.random()-.5)*0.6,
+dy:(Math.random()-.5)*0.6
+});
+}
+
+function animate(){
+ctx.clearRect(0,0,w,h);
+particles.forEach(p=>{
+p.x+=p.dx;
+p.y+=p.dy;
+if(p.x<0||p.x>w)p.dx*=-1;
+if(p.y<0||p.y>h)p.dy*=-1;
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+ctx.fillStyle="rgba(251,146,60,.7)";
+ctx.fill();
+});
+requestAnimationFrame(animate);
+}
+animate();
+
+/* ---------------- VAPI ---------------- */
+
+let vapiInstance=null;
+let timerInterval=null;
+let seconds=0;
+
+const assistant="6d6025f1-77eb-43f6-8e6a-d1fdffd1c387";
+const apiKey="e2229348-8964-47d1-9c17-a684d1c419ee";
+
+const statusEl=document.getElementById("status");
+const startBtn=document.getElementById("startBtn");
+const stopBtn=document.getElementById("stopBtn");
+const timerEl=document.getElementById("timer");
+const mic=document.getElementById("mic");
+const panel=document.getElementById("panel");
+
+function startTimer(){
+seconds=0;
+timerEl.innerText="00:00";
+timerInterval=setInterval(()=>{
+seconds++;
+const m=String(Math.floor(seconds/60)).padStart(2,"0");
+const s=String(seconds%60).padStart(2,"0");
+timerEl.innerText=`${m}:${s}`;
+},1000);
+}
+
+function stopTimer(){
+clearInterval(timerInterval);
+timerEl.innerText="00:00";
+}
+
+(function(d,t){
+var g=document.createElement(t),
+s=d.getElementsByTagName(t)[0];
+g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+g.async=true;
+s.parentNode.insertBefore(g,s);
+})(document,"script");
+
+startBtn.onclick=()=>{
+if(!window.vapiSDK){
+alert("Assistant loading...");
+return;
+}
+
+vapiInstance=window.vapiSDK.run({
+apiKey,
+assistant
+});
+
+statusEl.innerText="Connected";
+startBtn.disabled=true;
+stopBtn.disabled=false;
+mic.classList.add("active");
+panel.classList.add("active");
+startTimer();
+};
+
+stopBtn.onclick=()=>{
+if(vapiInstance){
+vapiInstance.stop();
+vapiInstance=null;
+}
+
+statusEl.innerText="Disconnected";
+startBtn.disabled=false;
+stopBtn.disabled=true;
+mic.classList.remove("active");
+panel.classList.remove("active");
+stopTimer();
+};
+</script>
+
+</body>
+</html>
