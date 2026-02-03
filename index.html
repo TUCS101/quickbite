@@ -2,114 +2,157 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>QuickBite Support</title>
+<title>QuickBite Voice Support</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-
-body{
-background:#f8fafc;
-color:#0f172a;
+:root{
+  --primary:#2563eb;
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --muted:#475569;
+  --card:#ffffff;
+  --border:#e5e7eb;
 }
 
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Header */
 header{
-padding:20px 60px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:white;
-border-bottom:1px solid #e5e7eb;
+  padding:18px 60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:white;
+  border-bottom:1px solid var(--border);
 }
 
 .logo{
-font-size:22px;
-font-weight:700;
-color:#2563eb;
+  font-size:22px;
+  font-weight:700;
+  color:var(--primary);
 }
 
+/* Main */
 main{
-max-width:1100px;
-margin:auto;
-padding:70px 24px;
+  flex:1;
+  max-width:1100px;
+  margin:auto;
+  padding:70px 24px;
 }
 
+/* Hero */
 .hero{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:60px;
-align-items:center;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  align-items:center;
 }
 
 .hero h1{
-font-size:44px;
-margin-bottom:12px;
+  font-size:44px;
+  margin-bottom:14px;
 }
 
 .hero p{
-color:#475569;
-margin-bottom:26px;
+  color:var(--muted);
+  margin-bottom:28px;
+  line-height:1.6;
 }
 
+/* Features */
 .features{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:16px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
 .feature{
-background:white;
-padding:18px;
-border-radius:14px;
-text-align:center;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
+  background:var(--card);
+  padding:18px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.05);
+  font-weight:500;
 }
 
+/* Voice Panel */
 .panel{
-background:white;
-border-radius:20px;
-padding:36px;
-text-align:center;
-box-shadow:0 12px 30px rgba(0,0,0,.08);
+  background:var(--card);
+  border-radius:22px;
+  padding:42px 32px;
+  text-align:center;
+  box-shadow:0 14px 40px rgba(0,0,0,.08);
 }
 
 .mic{
-font-size:46px;
-margin-bottom:10px;
+  font-size:50px;
+  margin-bottom:12px;
 }
 
+.panel h2{
+  margin-bottom:6px;
+}
+
+.panel small{
+  color:var(--muted);
+}
+
+/* Vapi Container */
 #vapi-container{
-margin-top:18px;
-display:flex;
-justify-content:flex-end;
+  margin-top:26px;
+  display:flex;
+  justify-content:center;
 }
 
-/* Style Vapi button */
+/* Vapi Button Styling */
 #vapi-container button{
-background:#2563eb!important;
-color:white!important;
-padding:14px 36px!important;
-border-radius:12px!important;
-font-size:16px!important;
-border:none!important;
-box-shadow:0 6px 16px rgba(37,99,235,.4);
+  background:var(--primary)!important;
+  color:white!important;
+  padding:14px 38px!important;
+  border-radius:12px!important;
+  font-size:16px!important;
+  border:none!important;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(37,99,235,.4);
+  transition:.2s ease;
 }
 
 #vapi-container button:hover{
-transform:translateY(-1px);
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(37,99,235,.45);
 }
 
+#vapi-container button:active{
+  transform:scale(.98);
+}
+
+/* Footer */
 footer{
-margin-top:80px;
-text-align:center;
-color:#64748b;
+  margin-top:90px;
+  text-align:center;
+  color:#64748b;
+  font-size:14px;
 }
 
+/* Responsive */
 @media(max-width:900px){
-.hero{grid-template-columns:1fr}
-.features{grid-template-columns:1fr}
-header{padding:20px}
-#vapi-container{justify-content:center}
+  header{padding:18px 24px}
+  .hero{grid-template-columns:1fr}
+  .features{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -117,61 +160,63 @@ header{padding:20px}
 <body>
 
 <header>
-<div class="logo">QuickBite</div>
-<div>Voice Customer Support</div>
+  <div class="logo">QuickBite</div>
+  <div>Voice Customer Support</div>
 </header>
 
 <main>
 
 <section class="hero">
 
-<div>
-<h1>QuickBite Voice Support</h1>
-<p>Get instant help for order status, delivery delays, missing items, wrong items, and cancellations using our AI voice assistant.</p>
+  <div>
+    <h1>QuickBite Voice Support</h1>
+    <p>
+      Get instant help for order status, delivery delays, missing items, wrong items,
+      and cancellations using our AI-powered voice assistant.
+    </p>
 
-<div class="features">
-<div class="feature">📦 Order Tracking</div>
-<div class="feature">🚚 Delivery Support</div>
-<div class="feature">🤖 AI Assistant</div>
-</div>
-</div>
+    <div class="features">
+      <div class="feature">📦 Order Tracking</div>
+      <div class="feature">🚚 Delivery Support</div>
+      <div class="feature">🤖 AI Assistant</div>
+    </div>
+  </div>
 
-<div class="panel">
-<div class="mic">🎤</div>
-<h2>Start Voice Support</h2>
+  <div class="panel">
+    <div class="mic">🎤</div>
+    <h2>Start Voice Support</h2>
+    <small>Tap below and speak naturally</small>
 
-<!-- Vapi button appears on right -->
-<div id="vapi-container"></div>
-
-</div>
+    <div id="vapi-container"></div>
+  </div>
 
 </section>
 
 <footer>
-QuickBite • College Demo Project • 2026
+  QuickBite • College Demo Project • 2026
 </footer>
 
 </main>
 
+<!-- VAPI Integration -->
 <script>
 const assistant="6d6025f1-77eb-43f6-8e6a-d1fdffd1c387";
 const apiKey="e2229348-8964-47d1-9c17-a684d1c419ee";
 
 (function(d,t){
-var g=document.createElement(t),
-s=d.getElementsByTagName(t)[0];
-g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-g.async=true;
-s.parentNode.insertBefore(g,s);
+  var g=document.createElement(t),
+  s=d.getElementsByTagName(t)[0];
+  g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+  g.async=true;
+  s.parentNode.insertBefore(g,s);
 
-g.onload=function(){
-window.vapiSDK.run({
-apiKey,
-assistant,
-container:"#vapi-container"
-});
-};
-
+  g.onload=function(){
+    window.vapiSDK.run({
+      apiKey,
+      assistant,
+      container:"#vapi-container"
+    });
+  };
 })(document,"script");
 </script>
 
