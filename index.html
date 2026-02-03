@@ -8,19 +8,16 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
 
-/* Hide Vapi widget */
-#vapi-widget,.vapi-widget,iframe[src*="vapi"]{display:none!important}
-
-body{
-background:#020617;
-color:white;
-overflow:hidden;
+/* HARD BLOCK VAPI WIDGET */
+iframe[src*="vapi"],
+.vapi-widget,
+#vapi-widget{
+display:none!important;
 }
 
-#particles{
-position:fixed;
-inset:0;
-z-index:-1;
+body{
+background:radial-gradient(circle at top,#0f172a,#020617);
+color:white;
 }
 
 header{
@@ -141,8 +138,6 @@ header{padding:20px}
 
 <body>
 
-<canvas id="particles"></canvas>
-
 <header>
 <div class="logo">QuickBite</div>
 <div>AI Voice Support</div>
@@ -189,43 +184,13 @@ QuickBite • College Demo • 2026
 </main>
 
 <script>
-/* ---------------- PARTICLES ---------------- */
-const canvas=document.getElementById("particles");
-const ctx=canvas.getContext("2d");
-let w,h,particles=[];
-
-function resize(){
-w=canvas.width=window.innerWidth;
-h=canvas.height=window.innerHeight;
-}
-window.onresize=resize;
-resize();
-
-for(let i=0;i<80;i++){
-particles.push({
-x:Math.random()*w,
-y:Math.random()*h,
-r:Math.random()*2+1,
-dx:(Math.random()-.5)*0.6,
-dy:(Math.random()-.5)*0.6
+/* FORCE REMOVE ANY VAPI WIDGET */
+setInterval(()=>{
+document.querySelectorAll("iframe").forEach(i=>{
+if(i.src && i.src.includes("vapi")) i.remove();
 });
-}
-
-function animate(){
-ctx.clearRect(0,0,w,h);
-particles.forEach(p=>{
-p.x+=p.dx;
-p.y+=p.dy;
-if(p.x<0||p.x>w)p.dx*=-1;
-if(p.y<0||p.y>h)p.dy*=-1;
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-ctx.fillStyle="rgba(251,146,60,.7)";
-ctx.fill();
-});
-requestAnimationFrame(animate);
-}
-animate();
+document.querySelectorAll(".vapi-widget,#vapi-widget").forEach(e=>e.remove());
+},500);
 
 /* ---------------- VAPI ---------------- */
 
